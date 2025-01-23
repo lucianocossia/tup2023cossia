@@ -1,0 +1,14 @@
+# Crear un alumno
+POST http://localhost:8080/alumno/
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "dni": 12345678
+}
+
+###
+
+# Buscar un alumno por apellido
+GET http://localhost:8080/alumno?apellido=Pérez
