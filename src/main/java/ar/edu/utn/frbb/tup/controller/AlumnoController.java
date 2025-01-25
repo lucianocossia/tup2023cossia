@@ -15,14 +15,11 @@ public class AlumnoController {
 
     @PostMapping("/")
     public Alumno crearAlumno(@RequestBody AlumnoDto alumnoDto) {
-
         return alumnoService.crearAlumno(alumnoDto);
-
     }
+
     @GetMapping
     public Alumno buscarAlumno(@RequestParam String apellido) {
-
        return alumnoService.buscarAlumno(apellido);
-
     }
 }
