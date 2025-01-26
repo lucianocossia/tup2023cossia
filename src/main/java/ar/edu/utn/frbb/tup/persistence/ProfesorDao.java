@@ -9,6 +9,9 @@ import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 public interface ProfesorDao {
 
     Profesor save(Profesor profesor) throws DuplicatedException;
-    Profesor findProfesorById(long id) throws ProfesorNotFoundException;
+
+    Profesor findProfesorById(Long id) throws ProfesorNotFoundException;
     List<Profesor> findProfesorBySurname(String apellidoProfesor) throws ProfesorNotFoundException;
+
+    void update(Long idProfesor, Profesor profesor) throws ProfesorNotFoundException;
 }

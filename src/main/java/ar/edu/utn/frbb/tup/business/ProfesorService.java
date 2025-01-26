@@ -11,7 +11,10 @@ import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 public interface ProfesorService {
 
     Profesor crearProfesor(ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException;
+
     List<Profesor> buscarProfesorApellido(String apellido) throws ProfesorNotFoundException;
     Profesor buscarProfesorPorId(Long id) throws ProfesorNotFoundException;
+
+    Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException;
 
 }

@@ -29,7 +29,7 @@ public Profesor save(final Profesor profesor) throws DuplicatedException {
 
 
     @Override
-    public Profesor findProfesorById(final long id) throws ProfesorNotFoundException {
+    public Profesor findProfesorById(final Long id) throws ProfesorNotFoundException {
         final Profesor profesor = repositorioProfesores.get(id);
         if (profesor == null){
             throw new ProfesorNotFoundException("No se pudo encontrar un profesor con el ID: " + id + ".");
@@ -58,6 +58,11 @@ public Profesor save(final Profesor profesor) throws DuplicatedException {
             }
         }
         return false;
+    }
+
+    @Override
+    public void update(final Long id, final Profesor profesor) throws ProfesorNotFoundException {
+        repositorioProfesores.put(id, profesor);
     }
 
 }

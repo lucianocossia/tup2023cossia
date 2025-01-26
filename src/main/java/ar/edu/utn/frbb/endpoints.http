@@ -10,9 +10,6 @@ Content-Type: application/json
 
 ###
 
-# Buscar un alumno por DNI
-GET http://localhost:8080/alumno?dni=12345678
-
 # Crear un Profesor
 POST http://localhost:8080/profesor/
 Content-Type: application/json
@@ -31,4 +28,16 @@ GET http://localhost:8080/profesor?apellido=Garcia
 ###
 
 # Buscar un profesor por id
-GET http://localhost:8080/profesor/32
+GET http://localhost:8080/profesor/520
+
+###
+
+# Actualizar un profesor
+PUT http://localhost:8080/profesor/520
+Content-Type: application/json
+
+{
+    "nombre": "Luciano",
+    "apellido": "Cossia",
+    "titulo": "Abogado"
+}
