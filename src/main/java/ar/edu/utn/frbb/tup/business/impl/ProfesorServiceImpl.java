@@ -64,6 +64,11 @@ public class ProfesorServiceImpl implements ProfesorService {
         return profesor;
     }
 
+    @Override
+    public void actualizarProfesor(final Profesor profesor) throws ProfesorNotFoundException {
+        profesorDao.update(profesor.getId(), profesor);
+    }
+
     private boolean checkStringField(final String field, final String fieldName) throws DatoInvalidoException {
         if (field == null || field.isBlank()) {
             throw new DatoInvalidoException("El " + fieldName + " no puede ser nulo ni estar vacío.");

@@ -1,10 +1,14 @@
 package ar.edu.utn.frbb.tup.model.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MateriaDto {
     private String nombre;
     private int anio;
     private int cuatrimestre;
     private long profesorId;
+    private int [] correlatividades;
 
     public long getProfesorId() {
         return profesorId;
@@ -36,6 +40,14 @@ public class MateriaDto {
 
     public void setCuatrimestre(int cuatrimestre) {
         this.cuatrimestre = cuatrimestre;
+    }
+
+    public int[] getCorrelatividades() {
+        return correlatividades;
+    }
+
+    public void setCorrelatividades(int[] correlatividades) {
+        this.correlatividades = correlatividades;
     }
 
 }

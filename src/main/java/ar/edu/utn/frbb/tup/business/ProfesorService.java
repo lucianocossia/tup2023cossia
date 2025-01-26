@@ -16,5 +16,5 @@ public interface ProfesorService {
     Profesor buscarProfesorPorId(Long id) throws ProfesorNotFoundException;
 
     Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException;
-
+    void actualizarProfesor(final Profesor profesor) throws ProfesorNotFoundException;
 }

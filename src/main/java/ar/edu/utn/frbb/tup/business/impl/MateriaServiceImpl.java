@@ -3,8 +3,10 @@ package ar.edu.utn.frbb.tup.business.impl;
 import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.business.ProfesorService;
 import ar.edu.utn.frbb.tup.model.Materia;
+import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
+import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 
@@ -16,32 +18,37 @@ import java.util.List;
 @Service
 public class MateriaServiceImpl implements MateriaService {
     @Autowired
-    private MateriaDao dao;
+    private MateriaDao materiaDao;
 
     @Autowired
     private ProfesorService profesorService;
 
     @Override
-    public Materia crearMateria(MateriaDto materia) throws IllegalArgumentException, ProfesorNotFoundException{
-        Materia m = new Materia();
-        m.setNombre(materia.getNombre());
-        m.setAnio(materia.getAnio());
-        m.setCuatrimestre(materia.getCuatrimestre());
-        m.setProfesor(profesorService.buscarProfesorPorId(materia.getProfesorId()));
-        dao.save(m);
-        if (m.getNombre().contains("a")) {
-            throw new IllegalArgumentException();
-        }
-        return m;
+    public Materia crearMateria(final MateriaDto materiaDto)
+            throws ProfesorNotFoundException, MateriaNotFoundException, DuplicatedException {
+        Materia materia = new Materia();
+        materia.setNombre(materiaDto.getNombre());
+        materia.setAnio(materiaDto.getAnio());
+        materia.setCuatrimestre(materiaDto.getCuatrimestre());
+        Profesor p = profesorService.buscarProfesorPorId(materiaDto.getProfesorId());
+        materiaDao.save(materia, materiaDto.getCorrelatividades());
+        materia.setProfesor(p);
+        profesorService.actualizarProfesor(p);
+        return materia;
+    }
+
+    @Override
+    public Materia buscarMateriaPorId(final Integer id) throws MateriaNotFoundException {
+        return materiaDao.findMateriaById(id);
+    }
+
+    @Override
+    public List<Materia> buscarMateriaPorNombre(final String nombreMateria) throws MateriaNotFoundException {
+        return materiaDao.findMateriaByName(nombreMateria);
     }
 
     @Override
     public List<Materia> getAllMaterias() {
-        return null;
-    }
-
-    @Override
-    public Materia getMateriaById(int idMateria) throws MateriaNotFoundException {
-        return dao.findById(idMateria);
+        return materiaDao.getAllMaterias();
     }
 }
