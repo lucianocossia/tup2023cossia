@@ -36,7 +36,7 @@ public class ProfesorController {
     }
 
     @GetMapping
-    public ResponseEntity<?> buscarProfesor(@RequestParam(required = false) Long idProfesor, 
+    public ResponseEntity<Object> buscarProfesor(@RequestParam(required = false) Long idProfesor, 
                                             @RequestParam(required = false) String apellido) throws ProfesorNotFoundException {
         if (apellido != null && !apellido.isBlank()) {
             List<Profesor> profesores = profesorService.buscarProfesorApellido(apellido);
@@ -65,7 +65,6 @@ public class ProfesorController {
         return ResponseEntity.ok(profesorActualizado);
     }
 
-    // Borrar un profesor
     @DeleteMapping("/{idProfesor}")
     public ResponseEntity<?> borrarProfesorPorId(@PathVariable("idProfesor") Long id) throws ProfesorNotFoundException {
         profesorService.borrarProfesorPorId(id);

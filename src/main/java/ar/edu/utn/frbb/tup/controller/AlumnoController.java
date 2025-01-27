@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.controller;
 
 import ar.edu.utn.frbb.tup.business.AlumnoService;
+import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class AlumnoController {
     private AlumnoService alumnoService;
 
     @PostMapping("/")
-    public Alumno crearAlumno(@RequestBody AlumnoDto alumnoDto) {
+    public Alumno crearAlumno(@RequestBody AlumnoDto alumnoDto) throws DatoInvalidoException {
         return alumnoService.crearAlumno(alumnoDto);
     }
 

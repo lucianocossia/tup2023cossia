@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.business.impl;
 
 import ar.edu.utn.frbb.tup.business.AlumnoService;
 import ar.edu.utn.frbb.tup.business.AsignaturaService;
+import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.EstadoAsignatura;
@@ -11,9 +12,10 @@ import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import ar.edu.utn.frbb.tup.utils.ValidationUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.List;
 
 @Component
 public class AlumnoServiceImpl implements AlumnoService {
@@ -38,14 +40,17 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoDao.saveAlumno(alumno);
     }
 
-    @Override
-    public Alumno crearAlumno(AlumnoDto alumno) {
-        Alumno a = new Alumno();
-        a.setNombre(alumno.getNombre());
-        a.setApellido(alumno.getApellido());
-        a.setDni(alumno.getDni());
-        Random random = new Random();
-        a.setId(random.nextLong());
+     @Override
+    public Alumno crearAlumno(final AlumnoDto alumnoDto) throws DatoInvalidoException {
+        ValidationUtils.checkStringField(alumnoDto.getNombre(), "nombre");
+        ValidationUtils.checkStringField(alumnoDto.getApellido(), "apellido");
+        ValidationUtils.comprobarDni(alumnoDto.getDni());
+        final Alumno a = new Alumno();
+        a.setNombre(alumnoDto.getNombre());
+        a.setApellido(alumnoDto.getApellido());
+        a.setDni(alumnoDto.getDni());
+        final List<Asignatura> asignaturas = asignaturaService.obtenerAsignaturas();
+        a.setAsignaturas(asignaturas);
         alumnoDao.saveAlumno(a);
         return a;
     }

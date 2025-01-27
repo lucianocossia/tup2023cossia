@@ -60,7 +60,7 @@ Content-Type: application/json
 ###
 
 # Borrar un profesor por id
-DELETE http://localhost:8080/profesor/308
+DELETE http://localhost:8080/profesor/760
 
 ###
 

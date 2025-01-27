@@ -39,6 +39,14 @@ public class Alumno {
         this.dni = dni;
     }
 
+    public void setAsignaturas(List<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
+    }
+
+    public List<Asignatura> getAsignaturas(){
+        return this.asignaturas;
+    }
+
     public String getNombre() {
         return nombre;
     }

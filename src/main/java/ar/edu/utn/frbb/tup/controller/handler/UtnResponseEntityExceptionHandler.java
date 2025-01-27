@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.controller.handler;
 
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
@@ -22,6 +23,15 @@ public class UtnResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         CustomApiError error = new CustomApiError();
         error.setErrorMessage(ex.getMessage());
         error.setErrorCode(4041);
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = { AsignaturaNotFoundException.class })
+    protected ResponseEntity<Object> handleMateriaNotFound(
+            AsignaturaNotFoundException ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();
+        error.setErrorMessage(ex.getMessage());
+        error.setErrorCode(4043);
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 

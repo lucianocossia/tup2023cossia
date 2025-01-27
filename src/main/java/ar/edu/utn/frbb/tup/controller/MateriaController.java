@@ -30,7 +30,7 @@ public class MateriaController {
     }
 
     @GetMapping
-    public ResponseEntity<?> buscarMateria(@RequestParam(required = false) Integer idMateria,
+    public ResponseEntity<Object> buscarMateria(@RequestParam(required = false) Integer idMateria,
             @RequestParam(required = false) String nombre) throws MateriaNotFoundException, DatoInvalidoException {
 
         if (idMateria != null) {

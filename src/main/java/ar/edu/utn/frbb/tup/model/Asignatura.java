@@ -9,10 +9,13 @@ public class Asignatura {
     private Materia materia;
     private EstadoAsignatura estado;
     private Integer nota;
+    private Long asignaturaId;
 
     public Asignatura() {
     }
-    public Asignatura(Materia materia) {
+
+    public Asignatura(Materia materia, long asignaturaId) {
+        this.asignaturaId = asignaturaId;
         this.materia = materia;
         this.estado = EstadoAsignatura.NO_CURSADA;
     }
@@ -31,6 +34,14 @@ public class Asignatura {
 
     public void setEstado(EstadoAsignatura estado) {
         this.estado = estado;
+    }
+
+    public Long getAsignaturaId() {
+        return asignaturaId;
+    }
+
+    public void setAsignaturaId(Long asignaturaId) {
+        this.asignaturaId = asignaturaId;
     }
 
     public String getNombreAsignatura(){
