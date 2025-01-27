@@ -2,8 +2,10 @@ package ar.edu.utn.frbb.tup.business.impl;
 
 import ar.edu.utn.frbb.tup.business.ProfesorService;
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
+import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
+import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.ProfesorDao;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
@@ -15,14 +17,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProfesorServiceImpl implements ProfesorService {
+
     @Autowired
     private ProfesorDao profesorDao;
+
+    @Autowired
+    private MateriaDao materiaDao;
 
     @Override
     public Profesor crearProfesor(final ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException {
         checkStringField(profesorDto.getNombre(), "nombre");
         checkStringField(profesorDto.getApellido(), "apellido");
-        checkTitulo(profesorDto);
+        checkStringField(profesorDto.getTitulo(), "título");
 
         final Profesor profesor = new Profesor();
         profesor.setTitulo(profesorDto.getTitulo());
@@ -30,6 +36,11 @@ public class ProfesorServiceImpl implements ProfesorService {
         profesor.setNombre(profesorDto.getNombre());
         profesorDao.save(profesor);
         return profesor;
+    }
+
+    @Override
+    public List<Profesor> obtenerProfesores() {
+        return profesorDao.getAllProfesores();
     }
 
     @Override
@@ -69,23 +80,20 @@ public class ProfesorServiceImpl implements ProfesorService {
         profesorDao.update(profesor.getId(), profesor);
     }
 
+    @Override
+    public void borrarProfesorPorId(Long id) throws ProfesorNotFoundException {
+        for (Materia materia : profesorDao.getMateriasAsociadas(id)) {
+            materiaDao.deleteMateriaById(materia.getMateriaId());
+        }
+        profesorDao.deleteProfesorById(id);
+    }
+
     private boolean checkStringField(final String field, final String fieldName) throws DatoInvalidoException {
         if (field == null || field.isBlank()) {
             throw new DatoInvalidoException("El " + fieldName + " no puede ser nulo ni estar vacío.");
         }
         if (field.matches(".*\\d+.*")) {
             throw new DatoInvalidoException("El " + fieldName + " no puede contener números.");
-        }
-        return true;
-    }
-
-    private boolean checkTitulo(final ProfesorDto profesorDto) throws DatoInvalidoException {
-        if (profesorDto.getTitulo() == null || profesorDto.getTitulo().isBlank()) {
-            throw new DatoInvalidoException("El título no puede ser nulo ni estar vacío.");
-        }
-        if (profesorDto.getTitulo().matches(".*\\d+.*")) {
-            throw new DatoInvalidoException("El título no puede contener números decimales, recuerde anotarlo con" +
-                    " números romanos. Ejemplo: 4 --> IV");
         }
         return true;
     }

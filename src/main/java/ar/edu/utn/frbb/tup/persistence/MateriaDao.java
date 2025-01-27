@@ -11,6 +11,11 @@ public interface MateriaDao {
     Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException, DuplicatedException;
 
     Materia findMateriaById(final Integer id) throws MateriaNotFoundException;
+
     List<Materia> findMateriaByName(String nombreMateria) throws MateriaNotFoundException;
+
     List<Materia> getAllMaterias();
+
+    void deleteMateriaById(int materiaId);
+    
 }

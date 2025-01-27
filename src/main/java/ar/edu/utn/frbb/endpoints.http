@@ -15,10 +15,25 @@ POST http://localhost:8080/profesor/
 Content-Type: application/json
 
 {
-    "nombre": "Pedro",
-    "apellido": "Garcia",
+    "nombre": "Juan",
+    "apellido": "Sanchez",
     "titulo": "Licenciado en Computación"
 }
+
+###
+POST http://localhost:8080/profesor/
+Content-Type: application/json
+
+{
+    "nombre": "Pedro",
+    "apellido": "Perez",
+    "titulo": "Licenciado en Computación"
+}
+
+###
+
+# Obtener todos los profesores
+GET http://localhost:8080/profesor
 
 ###
 
@@ -28,7 +43,7 @@ GET http://localhost:8080/profesor?apellido=Garcia
 ###
 
 # Buscar un profesor por id
-GET http://localhost:8080/profesor/
+GET http://localhost:8080/profesor?idProfesor=13
 
 ###
 
@@ -44,6 +59,11 @@ Content-Type: application/json
 
 ###
 
+# Borrar un profesor por id
+DELETE http://localhost:8080/profesor/308
+
+###
+
 # Crear una materia
 POST http://localhost:8080/materia/
 Content-Type: application/json
@@ -52,8 +72,21 @@ Content-Type: application/json
     "nombre": "ProgramacionI",
     "anio": 1,
     "cuatrimestre": 1,
-    "profesorId": 520,
+    "profesorId": 308,
     "correlatividades": []
+}
+
+### 
+
+POST http://localhost:8080/materia/
+Content-Type: application/json
+
+{
+    "nombre": "ProgramacionII",
+    "anio": 1,
+    "cuatrimestre": 1,
+    "profesorId": 13,
+    "correlatividades": [960]
 }
 
 ###
@@ -64,4 +97,4 @@ GET http://localhost:8080/materia?nombre=ProgramacionI
 ###
 
 # Buscar una materia por id
-GET http://localhost:8080/materia/35
+GET http://localhost:8080/materia/960

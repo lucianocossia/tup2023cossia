@@ -31,8 +31,8 @@ public class MateriaServiceImpl implements MateriaService {
         materia.setAnio(materiaDto.getAnio());
         materia.setCuatrimestre(materiaDto.getCuatrimestre());
         Profesor p = profesorService.buscarProfesorPorId(materiaDto.getProfesorId());
-        materiaDao.save(materia, materiaDto.getCorrelatividades());
         materia.setProfesor(p);
+        materiaDao.save(materia, materiaDto.getCorrelatividades());
         profesorService.actualizarProfesor(p);
         return materia;
     }
@@ -48,7 +48,7 @@ public class MateriaServiceImpl implements MateriaService {
     }
 
     @Override
-    public List<Materia> getAllMaterias() {
+    public List<Materia> obtenerMaterias() {
         return materiaDao.getAllMaterias();
     }
 }

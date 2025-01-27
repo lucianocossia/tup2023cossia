@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,19 +33,29 @@ public class ProfesorController {
     }
 
     @GetMapping
-    public List<Profesor> buscarProfesorPorApellido(@RequestParam String apellido) throws ProfesorNotFoundException {
-        return profesorService.buscarProfesorApellido(apellido);
+    public Object buscarProfesor(@RequestParam(required = false) Long idProfesor, 
+                                 @RequestParam(required = false) String apellido) throws ProfesorNotFoundException {
+        if (apellido != null && !apellido.isBlank()) {
+            return profesorService.buscarProfesorApellido(apellido);
+        }
+    
+        if (idProfesor != null) {
+            return profesorService.buscarProfesorPorId(idProfesor);
+        }
+        
+        return profesorService.obtenerProfesores();
     }
-
-    @GetMapping("/{idProfesor}")
-    public Profesor buscarProfesorPorId(@PathVariable ("idProfesor") Long id) throws ProfesorNotFoundException {
-        return profesorService.buscarProfesorPorId(id);
-    }
-
+    
+    
     @PutMapping("/{idProfesor}")
     public Profesor actualizarProfesorPorId(@PathVariable("idProfesor") Long idProfesor,
                                           @RequestBody ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException {
         return profesorService.actualizarProfesorPorId(idProfesor, profesorDto);
+    }
+
+    @DeleteMapping("/{idProfesor}")
+    public void borrarProfesorPorId(@PathVariable("idProfesor") Long id) throws ProfesorNotFoundException {
+        profesorService.borrarProfesorPorId(id);
     }
 
 }

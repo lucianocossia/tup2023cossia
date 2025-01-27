@@ -12,9 +12,17 @@ public interface ProfesorService {
 
     Profesor crearProfesor(ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException;
 
+    List<Profesor> obtenerProfesores();
+
     List<Profesor> buscarProfesorApellido(String apellido) throws ProfesorNotFoundException;
+
     Profesor buscarProfesorPorId(Long id) throws ProfesorNotFoundException;
 
-    Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException;
+    Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto)
+            throws ProfesorNotFoundException, DatoInvalidoException;
+
     void actualizarProfesor(final Profesor profesor) throws ProfesorNotFoundException;
+
+    void borrarProfesorPorId(Long id) throws ProfesorNotFoundException;
+    
 }

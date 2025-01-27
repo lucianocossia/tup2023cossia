@@ -62,12 +62,18 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
         return listaMaterias;
     }
 
+    @Override
+    public void deleteMateriaById(final int materiaId) {
+        repositorioMateria.remove(materiaId);
+    }
+
     private boolean duplicatedMateria(final Materia materia) throws DuplicatedException {
         for (Materia materia1: repositorioMateria.values()){
             if (materia1.getNombre().equals(materia.getNombre())){
-                throw new DuplicatedException("Ya existe una materia con el nombre " + materia.getNombre());
+                throw new DuplicatedException("Existe una materia con el nombre " + materia.getNombre());
             }
         }
         return true;
     }
+    
 }
