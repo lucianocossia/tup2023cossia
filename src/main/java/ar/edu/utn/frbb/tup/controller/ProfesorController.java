@@ -3,6 +3,8 @@ package ar.edu.utn.frbb.tup.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,41 +23,52 @@ import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 
 @RestController
-@RequestMapping("profesor")
+@RequestMapping("/profesor")
 public class ProfesorController {
 
     @Autowired
     ProfesorService profesorService;
 
     @PostMapping("/")
-    public Profesor crearProfesor(@RequestBody ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException {
-        return profesorService.crearProfesor(profesorDto);
+    public ResponseEntity<Profesor> crearProfesor(@RequestBody ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException {
+        Profesor profesor = profesorService.crearProfesor(profesorDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(profesor);
     }
 
     @GetMapping
-    public Object buscarProfesor(@RequestParam(required = false) Long idProfesor, 
-                                 @RequestParam(required = false) String apellido) throws ProfesorNotFoundException {
+    public ResponseEntity<?> buscarProfesor(@RequestParam(required = false) Long idProfesor, 
+                                            @RequestParam(required = false) String apellido) throws ProfesorNotFoundException {
         if (apellido != null && !apellido.isBlank()) {
-            return profesorService.buscarProfesorApellido(apellido);
+            List<Profesor> profesores = profesorService.buscarProfesorApellido(apellido);
+            if (profesores.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron profesores con el apellido proporcionado.");
+            }
+            return ResponseEntity.ok(profesores);
         }
     
         if (idProfesor != null) {
-            return profesorService.buscarProfesorPorId(idProfesor);
+            Profesor profesor = profesorService.buscarProfesorPorId(idProfesor);
+            return ResponseEntity.ok(profesor);
         }
         
-        return profesorService.obtenerProfesores();
+        List<Profesor> profesores = profesorService.obtenerProfesores();
+        if (profesores.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(profesores);
     }
-    
-    
+
     @PutMapping("/{idProfesor}")
-    public Profesor actualizarProfesorPorId(@PathVariable("idProfesor") Long idProfesor,
-                                          @RequestBody ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException {
-        return profesorService.actualizarProfesorPorId(idProfesor, profesorDto);
+    public ResponseEntity<Profesor> actualizarProfesorPorId(@PathVariable("idProfesor") Long idProfesor,
+                                                            @RequestBody ProfesorDto profesorDto) throws ProfesorNotFoundException, DatoInvalidoException {
+        Profesor profesorActualizado = profesorService.actualizarProfesorPorId(idProfesor, profesorDto);
+        return ResponseEntity.ok(profesorActualizado);
     }
 
+    // Borrar un profesor
     @DeleteMapping("/{idProfesor}")
-    public void borrarProfesorPorId(@PathVariable("idProfesor") Long id) throws ProfesorNotFoundException {
+    public ResponseEntity<?> borrarProfesorPorId(@PathVariable("idProfesor") Long id) throws ProfesorNotFoundException {
         profesorService.borrarProfesorPorId(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }
