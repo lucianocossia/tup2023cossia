@@ -5,6 +5,8 @@ import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
+import ar.edu.utn.frbb.tup.persistence.exception.ProfesorWithoutMateriasException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,15 @@ public class UtnResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         CustomApiError error = new CustomApiError();
         error.setErrorMessage(ex.getMessage());
         error.setErrorCode(4042);
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = { ProfesorWithoutMateriasException.class })
+    protected ResponseEntity<Object> handleProfesorNotFound(
+            ProfesorWithoutMateriasException ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();
+        error.setErrorMessage(ex.getMessage());
+        error.setErrorCode(4044);
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 

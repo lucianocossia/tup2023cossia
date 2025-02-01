@@ -1,5 +1,17 @@
 package ar.edu.utn.frbb.tup.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
 import ar.edu.utn.frbb.tup.model.Materia;
@@ -7,13 +19,7 @@ import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import ar.edu.utn.frbb.tup.utils.MateriaMapper;
 
 @RestController
 @RequestMapping("/materia")
@@ -22,12 +28,25 @@ public class MateriaController {
     @Autowired
     private MateriaService materiaService;
 
+    @Autowired
+    private MateriaMapper materiaMapper;
+
     @PostMapping
-    public ResponseEntity<Materia> crearMateria(@RequestBody MateriaDto materiaDto)
-            throws ProfesorNotFoundException, MateriaNotFoundException, DuplicatedException {
-        Materia materia = materiaService.crearMateria(materiaDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(materia);
+    public ResponseEntity<MateriaDto> crearMateria(@RequestBody MateriaDto materiaDto) {
+        try {
+            Materia materiaCreada = materiaService.crearMateria(materiaDto);
+
+            // Convertir la materia creada a DTO antes de responder
+            MateriaDto salida = materiaMapper.toDto(materiaCreada);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(salida);
+
+        } catch (ProfesorNotFoundException | DuplicatedException | MateriaNotFoundException e) {
+            // Manejo de errores
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
+
 
     @GetMapping
     public ResponseEntity<Object> buscarMateria(@RequestParam(required = false) Integer idMateria,

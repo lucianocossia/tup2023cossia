@@ -6,6 +6,7 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
+import ar.edu.utn.frbb.tup.persistence.exception.ProfesorWithoutMateriasException;
 
 public interface ProfesorDao {
 
@@ -17,7 +18,7 @@ public interface ProfesorDao {
 
     List<Profesor> findProfesorBySurname(String apellidoProfesor) throws ProfesorNotFoundException;
 
-    List<Materia> getMateriasAsociadas(Long id) throws ProfesorNotFoundException;
+    List<Materia> getMateriasAsociadas(Long id) throws ProfesorNotFoundException, ProfesorWithoutMateriasException;
 
     void update(Long idProfesor, Profesor profesor) throws ProfesorNotFoundException;
 

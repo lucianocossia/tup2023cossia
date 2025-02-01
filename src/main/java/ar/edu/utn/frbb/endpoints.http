@@ -38,29 +38,34 @@ GET http://localhost:8080/profesor
 ###
 
 # Buscar un profesor por apellido
-GET http://localhost:8080/profesor?apellido=Garcia
+GET http://localhost:8080/profesor?apellido=Perez
 
 ###
 
 # Buscar un profesor por id
-GET http://localhost:8080/profesor?idProfesor=13
+GET http://localhost:8080/profesor?idProfesor=980
 
 ###
 
 # Actualizar un profesor
-PUT http://localhost:8080/profesor/520
+PUT http://localhost:8080/profesor/580
 Content-Type: application/json
 
 {
     "nombre": "Luciano",
     "apellido": "Cossia",
-    "titulo": "Abogado"
+    "titulo": "Tecnico Universitario en Programacion"
 }
 
 ###
 
+# Obtener las materias de un profesor
+GET http://localhost:8080/profesor/188/materias
+
+###
+
 # Borrar un profesor por id
-DELETE http://localhost:8080/profesor/760
+DELETE http://localhost:8080/profesor/94
 
 ###
 
@@ -69,10 +74,10 @@ POST http://localhost:8080/materia/
 Content-Type: application/json
 
 {
-    "nombre": "ProgramacionI",
+    "nombre": "ProgramacionII",
     "anio": 1,
     "cuatrimestre": 1,
-    "profesorId": 308,
+    "profesorId": 188,
     "correlatividades": []
 }
 

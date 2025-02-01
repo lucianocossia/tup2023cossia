@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
+import ar.edu.utn.frbb.tup.persistence.exception.ProfesorWithoutMateriasException;
 import ar.edu.utn.frbb.tup.utils.RandomCreator;
 
 import java.util.Collections;
@@ -57,12 +58,16 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao {
     }
 
     @Override
-    public List<Materia> getMateriasAsociadas(final Long id) throws ProfesorNotFoundException {
+    public List<Materia> getMateriasAsociadas(final Long id) throws ProfesorNotFoundException, ProfesorWithoutMateriasException {
         final Profesor profesor = repositorioProfesores.get(id);
         if (profesor == null){
             throw new ProfesorNotFoundException("No se pudo encontrar un profesor con el ID: " + id + ".");
         }
         List<Materia> listaMaterias = profesor.getMateriasDictadas();
+        if (listaMaterias.isEmpty()) {
+            throw new ProfesorWithoutMateriasException("El profesor " + profesor.getNombre() + " " + profesor.getApellido() +
+                    " no tiene materias asociadas.");
+        }
         Collections.sort(listaMaterias, (materia1, materia2) -> materia1.getNombre().compareTo(materia2.getNombre()));
         return listaMaterias;
     }
