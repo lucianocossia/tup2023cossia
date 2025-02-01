@@ -36,13 +36,12 @@ public class MateriaController {
         try {
             Materia materiaCreada = materiaService.crearMateria(materiaDto);
 
-            // Convertir la materia creada a DTO antes de responder
             MateriaDto salida = materiaMapper.toDto(materiaCreada);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(salida);
 
         } catch (ProfesorNotFoundException | DuplicatedException | MateriaNotFoundException e) {
-            // Manejo de errores
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

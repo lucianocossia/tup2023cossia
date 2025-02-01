@@ -3,8 +3,8 @@ package ar.edu.utn.frbb.tup.business;
 import java.util.List;
 
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
+import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
-import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
@@ -20,7 +20,7 @@ public interface ProfesorService {
 
     Profesor buscarProfesorPorId(Long id) throws ProfesorNotFoundException;
 
-    List<MateriaDto> obtenerMateriasPorProfesorDto(Long idProfesor)
+    List<Materia> obtenerMateriasPorProfesor(Long idProfesor)
         throws ProfesorNotFoundException, ProfesorWithoutMateriasException;
 
     Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto)

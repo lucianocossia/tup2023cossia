@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.utn.frbb.tup.business.ProfesorService;
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
+import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorWithoutMateriasException;
+import ar.edu.utn.frbb.tup.utils.MateriaMapper;
 
 @RestController
 @RequestMapping("/profesor")
@@ -30,6 +32,9 @@ public class ProfesorController {
 
     @Autowired
     ProfesorService profesorService;
+
+    @Autowired
+    MateriaMapper materiaMapper;
 
     @PostMapping("/")
     public ResponseEntity<Profesor> crearProfesor(@RequestBody ProfesorDto profesorDto)
@@ -63,14 +68,17 @@ public class ProfesorController {
     }
 
     @GetMapping("/{idProfesor}/materias")
-public ResponseEntity<List<MateriaDto>> listarMateriasDeProfesor(@PathVariable Long idProfesor) throws ProfesorNotFoundException, ProfesorWithoutMateriasException {
+    public ResponseEntity<List<MateriaDto>> listarMateriasDeProfesor(@PathVariable Long idProfesor) throws ProfesorNotFoundException, ProfesorWithoutMateriasException {
 
-        List<MateriaDto> materias = profesorService.obtenerMateriasPorProfesorDto(idProfesor);
-        if (materias.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return ResponseEntity.ok(materias);
-}
+        List<Materia> materias = profesorService.obtenerMateriasPorProfesor(idProfesor);
+
+        List<MateriaDto> dtos = materias.stream()
+                .map(materiaMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(dtos);
+
+    }
 
     @PutMapping("/{idProfesor}")
     public ResponseEntity<Profesor> actualizarProfesorPorId(@PathVariable("idProfesor") Long idProfesor,

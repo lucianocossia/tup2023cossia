@@ -60,7 +60,7 @@ Content-Type: application/json
 ###
 
 # Obtener las materias de un profesor
-GET http://localhost:8080/profesor/188/materias
+GET http://localhost:8080/profesor/360/materias
 
 ###
 
@@ -74,10 +74,10 @@ POST http://localhost:8080/materia/
 Content-Type: application/json
 
 {
-    "nombre": "ProgramacionII",
+    "nombre": "ProgramacionI",
     "anio": 1,
     "cuatrimestre": 1,
-    "profesorId": 188,
+    "profesorId": 360,
     "correlatividades": []
 }
 

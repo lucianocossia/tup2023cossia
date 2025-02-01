@@ -4,14 +4,12 @@ import ar.edu.utn.frbb.tup.business.ProfesorService;
 import ar.edu.utn.frbb.tup.business.exception.DatoInvalidoException;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
-import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.ProfesorDao;
 import ar.edu.utn.frbb.tup.persistence.exception.DuplicatedException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.ProfesorWithoutMateriasException;
-import ar.edu.utn.frbb.tup.utils.MateriaMapper;
 
 import java.util.List;
 
@@ -26,9 +24,6 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Autowired
     private MateriaDao materiaDao;
-
-    @Autowired
-    private MateriaMapper materiaMapper;
 
     @Override
     public Profesor crearProfesor(final ProfesorDto profesorDto) throws DatoInvalidoException, DuplicatedException {
@@ -60,16 +55,11 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public List<MateriaDto> obtenerMateriasPorProfesorDto(Long idProfesor)
-            throws ProfesorNotFoundException, ProfesorWithoutMateriasException {
+public List<Materia> obtenerMateriasPorProfesor(Long idProfesor)
+        throws ProfesorNotFoundException, ProfesorWithoutMateriasException {
 
-        List<Materia> materias = profesorDao.getMateriasAsociadas(idProfesor);
-
-        // Convertir cada Materia en DTO a través del mapper
-        return materias.stream()
-                .map(materiaMapper::toDto)
-                .toList();
-    }
+    return profesorDao.getMateriasAsociadas(idProfesor);
+}
 
     @Override
     public Profesor actualizarProfesorPorId(final Long idProfesor, final ProfesorDto profesorDto)
