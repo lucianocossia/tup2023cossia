@@ -8,6 +8,7 @@ import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 
 public interface AlumnoService {
+
     void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException;
 
     Alumno crearAlumno(AlumnoDto alumno) throws DatoInvalidoException;
@@ -16,5 +17,8 @@ public interface AlumnoService {
 
     Alumno buscarAlumnoPorId(long id) throws AlumnoNotFoundException;
 
-    Alumno buscarAlumnoPorDni(long dni) throws AlumnoNotFoundException;
+    Alumno buscarAlumnoPorDni(long dni) throws AlumnoNotFoundException; 
+
+    Alumno actualizarAlumnoPorId(final Long idAlumno, final AlumnoDto alumnoDto) throws AlumnoNotFoundException;
+
 }

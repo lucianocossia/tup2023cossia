@@ -23,6 +23,18 @@ GET http://localhost:8080/alumno?id=1955834714492803438
 # Buscar un alumno por dni
 GET http://localhost:8080/alumno?dni=12345678
 
+###
+
+# Actualizar un alumno
+PUT http://localhost:8080/alumno/5753863295338116865
+Content-Type: application/json
+
+{
+    "nombre": "Carlos",
+    "apellido": "Rodriguez",
+    "dni": 87654321
+}
+
 # Crear un Profesor
 POST http://localhost:8080/profesor/
 Content-Type: application/json

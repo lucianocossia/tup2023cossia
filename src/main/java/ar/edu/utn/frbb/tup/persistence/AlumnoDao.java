@@ -13,4 +13,6 @@ public interface AlumnoDao {
 
     Alumno findAlumnoByDNI(Long dni) throws AlumnoNotFoundException;
 
+    void update(Long dni, Alumno a) throws AlumnoNotFoundException;
+
 }

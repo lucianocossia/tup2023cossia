@@ -50,4 +50,9 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
         throw new AlumnoNotFoundException("No existen alumnos con ese DNI.");
     }
 
+    @Override
+    public void update(final Long id, final Alumno alumno) {
+        repositorioAlumnos.put(id, alumno);
+    }
+
 }

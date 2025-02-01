@@ -74,4 +74,25 @@ public class AlumnoServiceImpl implements AlumnoService {
     public Alumno buscarAlumnoPorDni(long dni) throws AlumnoNotFoundException {
         return alumnoDao.findAlumnoByDNI(dni);
     }
+
+    @Override
+    public Alumno actualizarAlumnoPorId(final Long idAlumno, final AlumnoDto alumnoDto) throws AlumnoNotFoundException {
+        final Alumno alumno = alumnoDao.findAlumnoById(idAlumno);
+        alumno.setId(idAlumno);
+        if (alumnoDto.getNombre() != null &&
+                !alumnoDto.getNombre().isBlank() && !alumnoDto.getNombre().matches(".*\\d+.*")){
+            alumno.setNombre(alumnoDto.getNombre());
+        }
+        if (alumnoDto.getApellido() != null &&
+                !alumnoDto.getApellido().isBlank() && !alumnoDto.getApellido().matches(".*\\d+.*")){
+            alumno.setApellido(alumnoDto.getApellido());;
+        }
+        String dniToString = Long.toString(alumnoDto.getDni());
+        int digitQuantity = dniToString.length();
+        if (digitQuantity == 7 || digitQuantity == 8){
+            alumno.setDni(alumnoDto.getDni());
+        }
+        alumnoDao.update(idAlumno, alumno);
+        return alumno;
+    }
 }
