@@ -40,6 +40,10 @@ public class Asignatura {
         return asignaturaId;
     }
 
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
     public void setAsignaturaId(Long asignaturaId) {
         this.asignaturaId = asignaturaId;
     }
