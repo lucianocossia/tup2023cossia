@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.business.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ar.edu.utn.frbb.tup.business.AsignaturaService;
 import ar.edu.utn.frbb.tup.business.MateriaService;
@@ -10,6 +11,7 @@ import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.AsignaturaDao;
 
+@Service
 public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Autowired

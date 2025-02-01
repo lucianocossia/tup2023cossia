@@ -1,9 +1,9 @@
 package ar.edu.utn.frbb.tup.persistence;
 
 import ar.edu.utn.frbb.tup.model.Alumno;
-import org.springframework.http.HttpStatus;
+import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,20 +23,31 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     }
 
     @Override
-    public Alumno findAlumno(String apellidoAlumno) {
+    public Alumno findAlumno(String apellidoAlumno) throws AlumnoNotFoundException {
         for (Alumno a: repositorioAlumnos.values()) {
             if (a.getApellido().equals(apellidoAlumno)){
                 return a;
             }
         }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "No existen alumnos con esos datos."
-        );
+        throw new AlumnoNotFoundException("No existen alumnos con esos datos.");
     }
 
     @Override
-    public Alumno loadAlumno(Long dni) {
-        return null;
+    public Alumno findAlumnoById(Long id) throws AlumnoNotFoundException {
+        for (Alumno a: repositorioAlumnos.values()) {
+            if (a.getId() == id){
+                return a;
+            }
+        }
+        throw new AlumnoNotFoundException("No existen alumnos con ese ID.");
+    }
+
+    @Override
+    public Alumno findAlumnoByDNI(Long dni) throws AlumnoNotFoundException {
+        if (repositorioAlumnos.containsKey(dni)){
+            return repositorioAlumnos.get(dni);
+        }
+        throw new AlumnoNotFoundException("No existen alumnos con ese DNI.");
     }
 
 }

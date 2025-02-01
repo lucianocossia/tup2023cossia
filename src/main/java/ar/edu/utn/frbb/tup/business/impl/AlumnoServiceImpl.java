@@ -11,20 +11,25 @@ import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
-import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 import ar.edu.utn.frbb.tup.utils.ValidationUtils;
-import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class AlumnoServiceImpl implements AlumnoService {
 
-    private static final AlumnoDao alumnoDao = new AlumnoDaoMemoryImpl();
-    private static final AsignaturaService asignaturaService = new AsignaturaServiceImpl();
+    @Autowired
+    private AlumnoDao alumnoDao;
+
+    @Autowired
+    private AsignaturaService asignaturaService;
 
     @Override
-    public void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException {
+    public void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException {
         Asignatura a = asignaturaService.getAsignatura(materiaId, dni);
         for (Materia m:
              a.getMateria().getCorrelatividades()) {
@@ -35,7 +40,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         }
         a.aprobarAsignatura(nota);
         asignaturaService.actualizarAsignatura(a);
-        Alumno alumno = alumnoDao.loadAlumno(dni);
+        Alumno alumno = alumnoDao.findAlumnoByDNI(dni);
         alumno.actualizarAsignatura(a);
         alumnoDao.saveAlumno(alumno);
     }
@@ -56,7 +61,17 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public Alumno buscarAlumno(String apellido) {
+    public Alumno buscarAlumno(String apellido) throws AlumnoNotFoundException {
         return alumnoDao.findAlumno(apellido);
+    }
+
+    @Override
+    public Alumno buscarAlumnoPorId(long id) throws AlumnoNotFoundException {
+        return alumnoDao.findAlumnoById(id);
+    }
+
+    @Override
+    public Alumno buscarAlumnoPorDni(long dni) throws AlumnoNotFoundException {
+        return alumnoDao.findAlumnoByDNI(dni);
     }
 }
