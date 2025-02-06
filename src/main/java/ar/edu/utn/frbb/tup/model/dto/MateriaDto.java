@@ -7,14 +7,14 @@ public class MateriaDto {
     private String nombre;
     private int anio;
     private int cuatrimestre;
-    private long profesorId;
-    private int [] correlatividades;
+    private Long profesorId;
+    private Long [] correlatividades;
 
-    public long getProfesorId() {
+    public Long getProfesorId() {
         return profesorId;
     }
 
-    public void setProfesorId(long profesorId) {
+    public void setProfesorId(Long profesorId) {
         this.profesorId = profesorId;
     }
 
@@ -42,11 +42,11 @@ public class MateriaDto {
         this.cuatrimestre = cuatrimestre;
     }
 
-    public int[] getCorrelatividades() {
+    public Long[] getCorrelatividades() {
         return correlatividades;
     }
 
-    public void setCorrelatividades(int[] correlatividades) {
+    public void setCorrelatividades(Long[] correlatividades) {
         this.correlatividades = correlatividades;
     }
 

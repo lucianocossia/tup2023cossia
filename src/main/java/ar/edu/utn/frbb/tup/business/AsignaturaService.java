@@ -3,12 +3,13 @@ package ar.edu.utn.frbb.tup.business;
 import java.util.List;
 
 import ar.edu.utn.frbb.tup.model.Asignatura;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 
 public interface AsignaturaService {
     
-    Asignatura getAsignatura(int materiaId, long dni);
+    Asignatura getAsignaturaPorId(long idAsignatura) throws AsignaturaNotFoundException;
 
-    void actualizarAsignatura(Asignatura a);
+    void actualizarAsignatura(Asignatura a) throws AsignaturaNotFoundException;
 
     List<Asignatura> obtenerAsignaturas();
 }

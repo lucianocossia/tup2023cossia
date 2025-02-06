@@ -2,29 +2,35 @@ package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "asignaturaId")
 public class Asignatura {
 
+    private Long asignaturaId;
     private Materia materia;
     private EstadoAsignatura estado;
-    private Integer nota;
-    private Long asignaturaId;
+    private Optional<Integer> nota;
+    
 
     public Asignatura() {
     }
 
-    public Asignatura(Materia materia, long asignaturaId) {
+    public Asignatura(Materia materia, Long asignaturaId) {
         this.asignaturaId = asignaturaId;
         this.materia = materia;
         this.estado = EstadoAsignatura.NO_CURSADA;
     }
 
     public Optional<Integer> getNota() {
-        return Optional.ofNullable(nota);
+        return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(Optional<Integer> nota) {
         this.nota = nota;
     }
 
@@ -56,15 +62,19 @@ public class Asignatura {
         return materia;
     }
 
+    public List<Materia> getCorrelatividades(){
+        return this.materia.getCorrelatividades();
+    }
+
     public void cursarAsignatura(){
         this.estado = EstadoAsignatura.CURSADA;
     }
 
-    public void aprobarAsignatura(int nota) throws EstadoIncorrectoException {
+    public void aprobarAsignatura(Optional<Integer> nota) throws EstadoIncorrectoException {
         if (!this.estado.equals(EstadoAsignatura.CURSADA)) {
             throw new EstadoIncorrectoException("La materia debe estar cursada");
         }
-        if (nota>=4) {
+        if (nota.isPresent() && nota.get() >= 4) {
             this.estado = EstadoAsignatura.APROBADA;
             this.nota = nota;
         }

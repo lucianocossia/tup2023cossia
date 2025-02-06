@@ -38,7 +38,7 @@ public class MateriaServiceImpl implements MateriaService {
     }
 
     @Override
-    public Materia buscarMateriaPorId(final Integer id) throws MateriaNotFoundException {
+    public Materia buscarMateriaPorId(final Long id) throws MateriaNotFoundException {
         return materiaDao.findMateriaById(id);
     }
 

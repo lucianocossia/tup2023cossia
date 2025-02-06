@@ -14,15 +14,15 @@ import java.util.Map;
 @Service
 public class MateriaDaoMemoryImpl implements MateriaDao {
 
-    private static final Map<Integer, Materia> repositorioMateria = new HashMap<>();
+    private static final Map<Long, Materia> repositorioMateria = new HashMap<>();
 
     @Override
-    public Materia save(final Materia materia, final int[] correlatividades) throws MateriaNotFoundException, DuplicatedException {
+    public Materia save(final Materia materia, final Long[] correlatividades) throws MateriaNotFoundException, DuplicatedException {
         duplicatedMateria(materia);
         materia.setMateriaId(RandomCreator.getInstance().generateRandomNumber(999));
         repositorioMateria.put(materia.getMateriaId(), materia);
         final List<Materia> listaCorrelatividades = new ArrayList<>();
-        for (Integer i : correlatividades) {
+        for (Long i : correlatividades) {
             Materia materia2 = findMateriaById(i);
             listaCorrelatividades.add(materia2);
         }
@@ -31,7 +31,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     }
 
     @Override
-    public Materia findMateriaById(final Integer id) throws MateriaNotFoundException {
+    public Materia findMateriaById(final Long id) throws MateriaNotFoundException {
         final Materia materia = repositorioMateria.get(id);
         if (materia == null) {
             throw new MateriaNotFoundException("No se encuentra ninguna materia con el ID: " + id);
@@ -63,7 +63,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     }
 
     @Override
-    public void deleteMateriaById(final int materiaId) {
+    public void deleteMateriaById(final Long materiaId) {
         repositorioMateria.remove(materiaId);
     }
 

@@ -5,7 +5,8 @@ Content-Type: application/json
 {
     "nombre": "Carlos",
     "apellido": "Rodriguez",
-    "dni": 12345678
+    "dni": 12345678,
+    "asignaturas": [926, 996]
 }
 
 ###
@@ -16,7 +17,7 @@ GET http://localhost:8080/alumno?apellido=Rodriguez
 ###
 
 # Buscar un alumno por id
-GET http://localhost:8080/alumno?id=1955834714492803438
+GET http://localhost:8080/alumno?id=504
 
 ###
 
@@ -34,6 +35,30 @@ Content-Type: application/json
     "apellido": "Rodriguez",
     "dni": 87654321
 }
+
+###
+
+# Buscar todas las aisgnaturas asociadas a un alumno por id
+GET http://localhost:8080/alumno/434/asignaturas
+
+###
+
+# Buscar una asignatura por id asociada a un alumno
+
+GET http://localhost:8080/alumno/504/asignaturas/994
+
+###
+
+# Actualizar el estado de una asignatura por id
+PUT http://localhost:8080/alumno/434/asignaturas/514
+Content-Type: application/json
+
+{
+    "nota": 8,
+    "estado": "APROBADA"
+}
+
+###
 
 # Crear un Profesor
 POST http://localhost:8080/profesor/
@@ -85,7 +110,7 @@ Content-Type: application/json
 ###
 
 # Obtener las materias de un profesor
-GET http://localhost:8080/profesor/360/materias
+GET http://localhost:8080/profesor/95/materias
 
 ###
 
@@ -99,11 +124,11 @@ POST http://localhost:8080/materia/
 Content-Type: application/json
 
 {
-    "nombre": "ProgramacionI",
+    "nombre": "ProgramacionII",
     "anio": 1,
-    "cuatrimestre": 1,
-    "profesorId": 360,
-    "correlatividades": []
+    "cuatrimestre": 2,
+    "profesorId": 865,
+    "correlatividades": [926]
 }
 
 ### 
@@ -114,17 +139,17 @@ Content-Type: application/json
 {
     "nombre": "ProgramacionII",
     "anio": 1,
-    "cuatrimestre": 1,
-    "profesorId": 13,
-    "correlatividades": [960]
+    "cuatrimestre": 2,
+    "profesorId": 342,
+    "correlatividades": [539]
 }
 
 ###
 
 # Buscar una materia por nombre
-GET http://localhost:8080/materia?nombre=ProgramacionI
+GET http://localhost:8080/materia?nombre=ProgramacionII
 
 ###
 
 # Buscar una materia por id
-GET http://localhost:8080/materia/960
+GET http://localhost:8080/materia?id=751

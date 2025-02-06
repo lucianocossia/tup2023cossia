@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Profesor {
 
-    private long id;
+    private Long id;
     private String nombre;
     private String apellido;
     private String titulo;
@@ -41,11 +41,11 @@ public class Profesor {
         this.titulo = titulo;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

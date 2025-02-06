@@ -16,8 +16,8 @@ public class RandomCreator {
         return instance;
     }
 
-    public int generateRandomNumber (int maxNumber) {
-        return random.nextInt(maxNumber);
+    public long generateRandomNumber (long maxNumber) {
+        return random.nextLong(maxNumber);
     }
 }
 

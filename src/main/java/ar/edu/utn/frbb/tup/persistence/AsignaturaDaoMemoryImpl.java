@@ -50,5 +50,11 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
         }
         return asignatura;
     }
+
+    @Override
+    public void update(final Asignatura asignatura) throws AsignaturaNotFoundException {
+        Asignatura asignatura2 = getAsignaturaPorId(asignatura.getAsignaturaId());
+        repositorioAsignaturas.put(asignatura2.getAsignaturaId(), asignatura2);
+    }
     
 }

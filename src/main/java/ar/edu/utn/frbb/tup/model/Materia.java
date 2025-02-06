@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Materia {
 
-    private int materiaId;
+    private Long materiaId;
     private String nombre;
     private int anio;
     private int cuatrimestre;
@@ -78,11 +78,11 @@ public class Materia {
         return nombre;
     }
 
-    public int getMateriaId() {
+    public Long getMateriaId() {
         return materiaId;
     }
 
-    public void setMateriaId(int materiaId) {
+    public void setMateriaId(Long materiaId) {
         this.materiaId = materiaId;
     }
 

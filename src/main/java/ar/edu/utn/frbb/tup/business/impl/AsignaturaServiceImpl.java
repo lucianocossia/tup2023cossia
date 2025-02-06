@@ -10,6 +10,7 @@ import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.AsignaturaDao;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 
 @Service
 public class AsignaturaServiceImpl implements AsignaturaService {
@@ -19,19 +20,18 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Autowired
     private MateriaService materiaService;
- 
 
     @Override
-    public Asignatura getAsignatura(int materiaId, long dni) {
-        return null;
+    public Asignatura getAsignaturaPorId(final long idAsignatura) throws AsignaturaNotFoundException {
+        return asignaturaDao.getAsignaturaPorId(idAsignatura);
     }
 
     @Override
-    public void actualizarAsignatura(Asignatura a) {
-
+    public void actualizarAsignatura(Asignatura a) throws AsignaturaNotFoundException {
+        asignaturaDao.update(a);
     }
 
-     @Override
+    @Override
     public List<Asignatura> obtenerAsignaturas() {
         final List<Materia> listaMaterias = materiaService.obtenerMaterias();
         asignaturaDao.saveAsignaturas(listaMaterias);

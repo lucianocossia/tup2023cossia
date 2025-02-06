@@ -8,14 +8,14 @@ import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 
 public interface MateriaDao {
 
-    Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException, DuplicatedException;
+    Materia save(Materia materia, Long[] correlatividades) throws MateriaNotFoundException, DuplicatedException;
 
-    Materia findMateriaById(final Integer id) throws MateriaNotFoundException;
+    Materia findMateriaById(final Long id) throws MateriaNotFoundException;
 
     List<Materia> findMateriaByName(String nombreMateria) throws MateriaNotFoundException;
 
     List<Materia> getAllMaterias();
 
-    void deleteMateriaById(int materiaId);
+    void deleteMateriaById(Long materiaId);
     
 }

@@ -12,7 +12,7 @@ public interface MateriaService {
 
     Materia crearMateria(MateriaDto inputData) throws ProfesorNotFoundException, MateriaNotFoundException, DuplicatedException;
 
-    Materia buscarMateriaPorId(Integer id) throws MateriaNotFoundException;
+    Materia buscarMateriaPorId(Long id) throws MateriaNotFoundException;
 
     List<Materia> buscarMateriaPorNombre(String nombre) throws MateriaNotFoundException;
 

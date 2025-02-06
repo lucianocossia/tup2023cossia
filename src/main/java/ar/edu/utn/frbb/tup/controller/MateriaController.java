@@ -32,23 +32,16 @@ public class MateriaController {
     private MateriaMapper materiaMapper;
 
     @PostMapping
-    public ResponseEntity<MateriaDto> crearMateria(@RequestBody MateriaDto materiaDto) {
-        try {
-            Materia materiaCreada = materiaService.crearMateria(materiaDto);
+    public ResponseEntity<MateriaDto> crearMateria(@RequestBody MateriaDto materiaDto)
+            throws ProfesorNotFoundException, DuplicatedException, MateriaNotFoundException {
 
-            MateriaDto salida = materiaMapper.toDto(materiaCreada);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(salida);
-
-        } catch (ProfesorNotFoundException | DuplicatedException | MateriaNotFoundException e) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        Materia materiaCreada = materiaService.crearMateria(materiaDto);
+        MateriaDto materiaToDto = materiaMapper.toDto(materiaCreada);
+        return ResponseEntity.status(HttpStatus.CREATED).body(materiaToDto);
     }
 
-
     @GetMapping
-    public ResponseEntity<Object> buscarMateria(@RequestParam(required = false) Integer idMateria,
+    public ResponseEntity<Object> buscarMateria(@RequestParam(required = false) Long idMateria,
             @RequestParam(required = false) String nombre) throws MateriaNotFoundException, DatoInvalidoException {
 
         if (idMateria != null) {

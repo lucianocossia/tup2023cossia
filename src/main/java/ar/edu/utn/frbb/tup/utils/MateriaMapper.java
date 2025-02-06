@@ -1,7 +1,6 @@
 package ar.edu.utn.frbb.tup.utils;
 
 import ar.edu.utn.frbb.tup.model.Materia;
-import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import org.springframework.stereotype.Component;
 
@@ -20,23 +19,12 @@ public class MateriaMapper {
         }
 
         if (materia.getCorrelatividades() != null) {
-            int[] correlatividadesId = materia.getCorrelatividades().stream()
-                    .mapToInt(Materia::getMateriaId).toArray();
+            Long[] correlatividadesId = materia.getCorrelatividades().stream()
+                    .map(Materia::getMateriaId)
+                    .toArray(Long[]::new);
             materiaDto.setCorrelatividades(correlatividadesId);
         }
 
         return materiaDto;
     }
-
-    public Materia toEntity(MateriaDto dto, Profesor profesor) {
-        Materia materia = new Materia();
-        materia.setNombre(dto.getNombre());
-        materia.setAnio(dto.getAnio());
-        materia.setCuatrimestre(dto.getCuatrimestre());
-
-        materia.setProfesor(profesor);
-
-        return materia;
-    }
 }
-
