@@ -117,7 +117,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         
         asignaturaService.actualizarAsignatura(asignatura);
         alumno.actualizarAsignatura(asignatura);
-        alumnoDao.update(alumno.getDni(), alumno);
+        alumnoDao.update(alumno.getId(), alumno);
         return asignatura;
     }
 
