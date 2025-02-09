@@ -1,80 +1,130 @@
 package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
-import org.junit.jupiter.api.BeforeAll;
+import ar.edu.utn.frbb.tup.persistence.exception.NotaException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AsignaturaTest {
+class AsignaturaTest {
 
-    private static Materia materia;
-    private static Profesor profesor;
+    private Materia materiaBase;
 
-    @BeforeAll
-    public static void setUp(){
-        profesor = new Profesor("Luciano", "Salotto", "Lic.");
-        materia = new Materia("Laboratorio 3", 2, 1, profesor);
+    @BeforeEach
+    void setUp() {
+        Profesor profesor = new Profesor("Mario", "Rossi", "Dr.");
+        materiaBase = new Materia("Matemática", 1, 1, profesor);
     }
 
     @Test
-    public void testNewAsignatura() {
-        Asignatura asignatura = new Asignatura(materia);
-        assertEquals(EstadoAsignatura.NO_CURSADA, asignatura.getEstado());
-        assertFalse(asignatura.getNota().isPresent());
-        assertEquals("Laboratorio 3", asignatura.getNombreAsignatura());
+    void testConstructorSinParametros() {
+        Asignatura asign = new Asignatura();
+
+        assertNull(asign.getAsignaturaId());
+        assertNull(asign.getMateria());
     }
 
     @Test
-    public void testAprobarAasignatura(){
-        Asignatura asignatura = new Asignatura(materia);
-        assertEquals(EstadoAsignatura.NO_CURSADA,asignatura.getEstado());
-        asignatura.cursarAsignatura();
-        try {
-            asignatura.aprobarAsignatura(8);
-            assertEquals(EstadoAsignatura.APROBADA,asignatura.getEstado());
-        } catch (EstadoIncorrectoException e) {
-            throw new RuntimeException(e);
-        }
+    void testConstructorConMateria() {
+        Asignatura asign = new Asignatura(materiaBase, 100L);
+
+        assertEquals(100, asign.getAsignaturaId());
+        assertEquals(materiaBase, asign.getMateria());
+        assertEquals(EstadoAsignatura.NO_CURSADA, asign.getEstado());
+        assertTrue(asign.getNota().isEmpty());
     }
 
-//    @Test(expected = EstadoIncorrectoException.class)
-//    public void testAprobarAsignaturaMateriaNoCursada() throws EstadoIncorrectoException{
-//        Asignatura asignatura = new Asignatura(materia);
-//        asignatura.aprobarAsignatura(8);
-//    }
-//
-//    @Test (expected = EstadoIncorrectoException.class)
-//    public void testAprobarAasignaturaYaAprobada() throws EstadoIncorrectoException{
-//        Asignatura asignatura = new Asignatura(materia);
-//        asignatura.cursarAsignatura();
-//        asignatura.aprobarAsignatura(8);
-//        assertEquals(EstadoAsignatura.APROBADA,asignatura.getEstado());
-//        asignatura.aprobarAsignatura(9);
-//
-//    }
-//
-//    @Test(expected = IllegalArgumentException.class)
-//    public void aprobarAsignaturaNotaMenorCero() throws EstadoIncorrectoException {
-//        Asignatura asignatura = new Asignatura(materia);
-//        asignatura.cursarAsignatura();
-//        asignatura.aprobarAsignatura(-3);
-//    }
-//
-//    @Test(expected = IllegalArgumentException.class)
-//    public void aprobarAsignaturaNotaMayorDiez() throws EstadoIncorrectoException {
-//        Asignatura asignatura = new Asignatura(materia);
-//        asignatura.cursarAsignatura();
-//        asignatura.aprobarAsignatura(13);
-//    }
+    @Test
+    void testGetNombreAsignatura() {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        assertEquals("Matemática", asign.getNombreAsignatura());
+    }
 
     @Test
-    public void aprobarAsignaturaNotaDesaprobado() throws EstadoIncorrectoException {
-        Asignatura asignatura = new Asignatura(materia);
-        asignatura.cursarAsignatura();
-        asignatura.aprobarAsignatura(3);
-        assertEquals(EstadoAsignatura.CURSADA, asignatura.getEstado());
+    void testGetCorrelatividades() {
+        Materia correlativa1 = new Materia("Algebra", 1, 1, null);
+        Materia correlativa2 = new Materia("Geo", 1, 1, null);
+        materiaBase.agregarCorrelatividad(correlativa1);
+        materiaBase.agregarCorrelatividad(correlativa2);
+
+        Asignatura asign = new Asignatura(materiaBase, 200L);
+        assertEquals(2, asign.getCorrelatividades().size());
+        assertEquals("Algebra", asign.getCorrelatividades().get(0).getNombre());
+        assertEquals("Geo", asign.getCorrelatividades().get(1).getNombre());
+    }
+
+    @Test
+    void testCursarAsignatura() {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        assertEquals(EstadoAsignatura.NO_CURSADA, asign.getEstado());
+
+        asign.cursarAsignatura();
+        assertEquals(EstadoAsignatura.CURSADA, asign.getEstado());
+    }
+
+    @Test
+    void testAprobarAsignatura_EstadoIncorrecto() {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.NO_CURSADA);
+
+        assertThrows(EstadoIncorrectoException.class, () -> {
+            asign.aprobarAsignatura(Optional.of(7));
+        });
+    }
+
+    @Test
+    void testAprobarAsignatura_NotaInvalidaMenorACero() {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.CURSADA);
+
+        assertThrows(NotaException.class, () -> {
+            asign.aprobarAsignatura(Optional.of(-1));
+        });
+    }
+
+    @Test
+    void testAprobarAsignatura_NotaInvalidaMayorADiez() {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.CURSADA);
+
+        assertThrows(NotaException.class, () -> {
+            asign.aprobarAsignatura(Optional.of(11));
+        });
+    }
+
+    @Test
+    void testAprobarAsignatura_NotaAprobatoria() throws EstadoIncorrectoException, NotaException {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.CURSADA);
+
+        asign.aprobarAsignatura(Optional.of(7));
+
+        assertEquals(EstadoAsignatura.APROBADA, asign.getEstado());
+        assertEquals(Optional.of(7), asign.getNota());
+    }
+
+    @Test
+    void testAprobarAsignatura_NotaBajaNoAprueba() throws EstadoIncorrectoException, NotaException {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.CURSADA);
+
+        asign.aprobarAsignatura(Optional.of(3));
+
+        assertEquals(EstadoAsignatura.CURSADA, asign.getEstado());
+        assertEquals(Optional.of(3), asign.getNota());
+    }
+
+    @Test
+    void testAprobarAsignatura_SinNota() throws EstadoIncorrectoException, NotaException {
+        Asignatura asign = new Asignatura(materiaBase, 101L);
+        asign.setEstado(EstadoAsignatura.CURSADA);
+
+        asign.aprobarAsignatura(Optional.empty());
+
+        assertEquals(EstadoAsignatura.CURSADA, asign.getEstado());
+        assertTrue(asign.getNota().isEmpty());
     }
 }
