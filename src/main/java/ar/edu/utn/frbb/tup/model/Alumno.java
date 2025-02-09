@@ -20,6 +20,7 @@ public class Alumno {
     private List<Asignatura> asignaturas;
 
     public Alumno() {
+        this.asignaturas = new ArrayList<>();
     }
 
     public Alumno(String nombre, String apellido, long dni) {
@@ -90,17 +91,24 @@ public class Alumno {
     }
 
     private void chequearCorrelatividad(Materia correlativa, Asignatura asignatura)
-            throws CorrelatividadException {
-        for (Asignatura a : asignaturas) {
-            if (correlativa.getNombre().equals(a.getNombreAsignatura())) {
-                if (!EstadoAsignatura.APROBADA.equals(a.getEstado())) {
-                    throw new CorrelatividadException(
-                            "La asignatura " + correlativa.getNombre() + " [ID: " + a.getAsignaturaId()
-                                    + "] debe estar aprobada para cursar/aprobar " + asignatura.getNombreAsignatura());
-                }
+        throws CorrelatividadException {
+    boolean found = false;
+    for (Asignatura a : asignaturas) {
+        if (correlativa.getNombre().equals(a.getNombreAsignatura())) {
+            found = true;
+            if (!EstadoAsignatura.APROBADA.equals(a.getEstado())) {
+                throw new CorrelatividadException(
+                        "La asignatura " + correlativa.getNombre() + " debe estar aprobada.");
             }
         }
     }
+    if (!found) {
+        throw new CorrelatividadException(
+                "La asignatura correlativa " + correlativa.getNombre() + " no se encuentra en la lista del alumno."
+        );
+    }
+}
+
 
     private void chequearAsignatura(Asignatura asignatura) throws AsignaturaNotFoundException {
         if (!asignaturas.contains(asignatura)) {

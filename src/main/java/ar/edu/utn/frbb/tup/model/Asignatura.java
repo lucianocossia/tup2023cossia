@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
+import ar.edu.utn.frbb.tup.persistence.exception.NotaException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,6 @@ public class Asignatura {
     private Materia materia;
     private EstadoAsignatura estado;
     private Optional<Integer> nota;
-    
 
     public Asignatura() {
     }
@@ -24,6 +24,7 @@ public class Asignatura {
         this.asignaturaId = asignaturaId;
         this.materia = materia;
         this.estado = EstadoAsignatura.NO_CURSADA;
+        this.nota = Optional.empty();
     }
 
     public Optional<Integer> getNota() {
@@ -54,7 +55,7 @@ public class Asignatura {
         this.asignaturaId = asignaturaId;
     }
 
-    public String getNombreAsignatura(){
+    public String getNombreAsignatura() {
         return this.materia.getNombre();
     }
 
@@ -62,22 +63,31 @@ public class Asignatura {
         return materia;
     }
 
-    public List<Materia> getCorrelatividades(){
+    public List<Materia> getCorrelatividades() {
         return this.materia.getCorrelatividades();
     }
 
-    public void cursarAsignatura(){
+    public void cursarAsignatura() {
         this.estado = EstadoAsignatura.CURSADA;
     }
 
-    public void aprobarAsignatura(Optional<Integer> nota) throws EstadoIncorrectoException {
+    public void aprobarAsignatura(Optional<Integer> nota)
+            throws EstadoIncorrectoException, NotaException {
         if (!this.estado.equals(EstadoAsignatura.CURSADA)) {
             throw new EstadoIncorrectoException("La materia debe estar cursada");
         }
-        if (nota.isPresent() && nota.get() >= 4) {
-            this.estado = EstadoAsignatura.APROBADA;
-            this.nota = nota;
+
+        if (nota.isPresent()) {
+            int n = nota.get();
+            if (n < 0 || n > 10) {
+                throw new NotaException("Nota fuera de rango");
+            }
+            if (n >= 4) {
+                this.estado = EstadoAsignatura.APROBADA;
+                this.nota = Optional.of(n);
+            } else {
+                this.nota = Optional.of(n);
+            }
         }
     }
-
 }
