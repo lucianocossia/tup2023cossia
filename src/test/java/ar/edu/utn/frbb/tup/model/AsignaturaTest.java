@@ -15,8 +15,8 @@ class AsignaturaTest {
 
     @BeforeEach
     void setUp() {
-        Profesor profesor = new Profesor("Mario", "Rossi", "Dr.");
-        materiaBase = new Materia("Matemática", 1, 1, profesor);
+        Profesor profesor = new Profesor("Luciano", "Salotto", "Lic.");
+        materiaBase = new Materia("LaboratorioIII", 2, 1, profesor);
     }
 
     @Test
@@ -40,20 +40,20 @@ class AsignaturaTest {
     @Test
     void testGetNombreAsignatura() {
         Asignatura asign = new Asignatura(materiaBase, 101L);
-        assertEquals("Matemática", asign.getNombreAsignatura());
+        assertEquals("LaboratorioIII", asign.getNombreAsignatura());
     }
 
     @Test
     void testGetCorrelatividades() {
-        Materia correlativa1 = new Materia("Algebra", 1, 1, null);
-        Materia correlativa2 = new Materia("Geo", 1, 1, null);
+        Materia correlativa1 = new Materia("LaboratorioII", 1, 2, null);
+        Materia correlativa2 = new Materia("LaboratorioIII", 2, 1, null);
         materiaBase.agregarCorrelatividad(correlativa1);
         materiaBase.agregarCorrelatividad(correlativa2);
 
         Asignatura asign = new Asignatura(materiaBase, 200L);
         assertEquals(2, asign.getCorrelatividades().size());
-        assertEquals("Algebra", asign.getCorrelatividades().get(0).getNombre());
-        assertEquals("Geo", asign.getCorrelatividades().get(1).getNombre());
+        assertEquals("LaboratorioII", asign.getCorrelatividades().get(0).getNombre());
+        assertEquals("LaboratorioIII", asign.getCorrelatividades().get(1).getNombre());
     }
 
     @Test

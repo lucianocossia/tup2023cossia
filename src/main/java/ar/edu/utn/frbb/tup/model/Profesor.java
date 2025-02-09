@@ -27,6 +27,7 @@ public class Profesor {
         this.apellido = apellido;
         this.nombre = nombre;
         this.titulo = titulo;
+        this.materiasDictadas = new ArrayList<>();
     }
 
     public void setNombre(String nombre) {

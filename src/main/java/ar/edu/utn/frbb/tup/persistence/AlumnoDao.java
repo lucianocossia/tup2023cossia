@@ -14,7 +14,7 @@ public interface AlumnoDao {
 
     Alumno findAlumno(String apellidoAlumno) throws AlumnoNotFoundException;
 
-    Alumno findAlumnoById(Long dni) throws AlumnoNotFoundException;
+    Alumno findAlumnoById(Long id) throws AlumnoNotFoundException;
 
     Alumno findAlumnoByDNI(Long dni) throws AlumnoNotFoundException;
 
@@ -22,6 +22,6 @@ public interface AlumnoDao {
     
     Asignatura getAsignaturaAlumnoPorId(Long id, Long idAsignatura) throws AlumnoNotFoundException, AsignaturaNotFoundException;
 
-    void update(Long dni, Alumno a) throws AlumnoNotFoundException;
+    void update(Long id, Alumno a) throws AlumnoNotFoundException;
 
 }

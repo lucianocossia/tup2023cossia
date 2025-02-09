@@ -92,17 +92,17 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     }
 
     @Override
-    public void update(final Long dni, final Alumno alumno) throws AlumnoNotFoundException {
+    public void update(final Long id, final Alumno alumno) throws AlumnoNotFoundException {
         boolean found = false;
         for (Alumno a : repositorioAlumnos.values()) {
-            if (a.getDni() == dni) {
+            if (a.getId() == id) {
                 repositorioAlumnos.put(alumno.getId(), alumno);
                 found = true;
                 break;
             }
         }
         if (!found) {
-            throw new AlumnoNotFoundException("No se encuentra el alumno con DNI: " + dni);
+            throw new AlumnoNotFoundException("No se encuentra el alumno con Id: " + id);
         }
     }
     
