@@ -6,7 +6,7 @@ Content-Type: application/json
     "nombre": "Carlos",
     "apellido": "Rodriguez",
     "dni": 12345678,
-    "asignaturas": [926, 996]
+    "asignaturas": [951]
 }
 
 ###
@@ -27,7 +27,7 @@ GET http://localhost:8080/alumno?dni=12345678
 ###
 
 # Actualizar un alumno
-PUT http://localhost:8080/alumno/5753863295338116865
+PUT http://localhost:8080/alumno/222
 Content-Type: application/json
 
 {
@@ -50,7 +50,7 @@ GET http://localhost:8080/alumno/504/asignaturas/994
 ###
 
 # Actualizar el estado de una asignatura por id
-PUT http://localhost:8080/alumno/434/asignaturas/514
+PUT http://localhost:8080/alumno/222/asignaturas/152
 Content-Type: application/json
 
 {
@@ -127,8 +127,8 @@ Content-Type: application/json
     "nombre": "ProgramacionII",
     "anio": 1,
     "cuatrimestre": 2,
-    "profesorId": 865,
-    "correlatividades": [926]
+    "profesorId": 951,
+    "correlatividades": []
 }
 
 ### 
